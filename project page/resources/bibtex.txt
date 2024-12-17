@@ -1,0 +1,9 @@
+@inproceedings{Cheng2022virtualview,
+      title={DiffGrasp: Whole-Body Grasping Synthesis Guided by Object Motion Using a Diffusion Model}, 
+      author={Yonghao Zhang, Qiang He, Yanguang Wan, Yinda Zhang, Xiaoming Deng, Cuixia Ma, Hongan Wang}, 
+      booktitle={AAAI Conference on Artificial Intelligence (AAAI)}, 
+      year={2025} 
+} 
+
+
+
