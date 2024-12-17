@@ -1,0 +1,294 @@
+<html>
+
+<head>
+    <link rel="StyleSheet" href="style.css" type="text/css" media="all">
+    <title>DiffGrasp: Whole-Body Grasping Synthesis <br> Guided by Object Motion Using a Diffusion Model</title>
+    <meta property="og:title" content="DiffGrasp: Whole-Body Grasping Synthesis Guided by Object Motion Using a Diffusion Model">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body>
+    <br>
+    <div class="center-div">
+        <span style="font-size:40px"><span style="color: #ceaec1">Diffgrasp</span>: Whole-Body Grasping Synthesis <br> Guided by Object Motion Using a Diffusion Model</span>
+    </div>
+
+    <br>
+    <table align="center" width="800px">
+        <tbody>
+            <tr>
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            Yonghao Zhang<sup>1,2*</sup>
+                        </span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            Qiang He<sup>1,2*</sup>
+                        </span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            Yanguang Wan<sup>1,2</sup>
+                        </span>
+                    </div>
+                </td>
+                
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            <a href="https://www.zhangyinda.com/">Yinda Zhang</a><sup>3</sup>
+                        </span>
+                    </div>
+                </td>
+
+                
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table align="center" width="700px">
+        <tbody>
+            <tr>
+            
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            <a href="http://www.idengxm.com/">Xiaoming Deng</a><sup>1,2†</sup>
+                        </span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            Cuixia Ma<sup>1,2</sup>
+                        </span>
+                    </div>
+                </td>
+                
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">Hongan Wang<sup>1,2</sup></span>
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <table align="center" width="1000px">
+        <tbody>
+            <tr>
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            <sup>1</sup><a href="http://www.iscas.ac.cn/">Institute of Software, Chinese Academy of Sciences</a>
+                        </span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            <sup>2</sup><a href="https://www.ucas.ac.cn/">University of Chinese Academy of Sciences</a>
+                        </span>
+                    </div>
+                </td>
+                
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:22px">
+                            <sup>3</sup><a href="https://www.google.com/">Google</a>
+                        </span>
+                    </div>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    
+
+    <br>
+    <table align="center" width="600px">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div">
+                        <img src="./resources/images/cover.png" width="800px"></a><br>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div">
+                        <span style="font-size:14px">
+                            DiffGrasp generates whole-body human grasp sequence with realistic finger-object contact, conditioned on 3D object shape and object motion sequence.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+
+    <hr>
+    <div class="center-div">
+        <h1>Abstract</h1>
+    </div>
+    <p>
+        Generating high-quality whole-body human object interaction motion sequences is becoming increasingly important in various fields such as animation, VR/AR, and robotics. 
+The main challenge of this task lies in determining the level of involvement of each hand given the complex shapes of objects in different sizes and their different motion trajectories, 
+while ensuring strong grasping realism and guaranteeing the coordination of movement in all body parts. 
+Contrasting with existing work, which either generates human interaction motion sequences without detailed hand grasping poses or only models a static grasping pose, we propose a simple yet effective framework that jointly models the relationship between the body, hands, and the given object motion sequences within a single diffusion model. To guide our network in perceiving the object's spatial position and learning more natural grasping poses, we introduce novel contact-aware losses and incorporate a data-driven, carefully designed guidance. 
+Experimental results demonstrate that our approach outperforms the state-of-the-art method and generates plausible whole-body motion sequences.
+    </p>
+    <br><br>
+
+    <hr>
+    <div class="center-div">
+        <h1 id="code">DiffGrasp Framework</h1>
+    </div>
+    <table align="center" width="1000px">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div">
+                        <img class="round" style="width:1000" src="./resources/images/pipeline.png">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div">
+                        <span style="font-size:14px">
+                            In our conditional diffusion model, we use the given sequence of object motion, object shape and the SMPL-X identity as conditions. After specially designed positional encodings, these embedded conditions are inputted into a transformer-encoder-based condition encoder. Then, a transformer decoder as denoising network predicts a sequence of clean whole-body pose of SMPL-X as well as the wrist joints translations relative to the object centroid. During the inference stage, we reconstruct the SMPL-X pose sequence into a human mesh sequence. Based on carefully designed guidance functions, we control and optimize our predicted results for more stable hand grasping, less penetration and better foot-floor contact through reconstruction guidance strategy.
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+
+    <hr>
+    <div class="center-div">
+        <h1 id="paper">Paper and Code</h1>
+    </div>
+    <table align="center" width="900px">
+
+        <tbody>
+            <tr>
+                <td>
+                    <img class="layered-paper-big" style="height:175px" src="./resources/images/page1.png">
+                </td>
+                <td>
+                    <span style="font-size:14pt">Y. Zhang, Q. He, Y. Wan, Y. Zhang, X. Deng, C. Ma, H. Wang</span>
+                    <br><br>
+                    <b><span style="display:inline-block;width:600px;font-size:14pt">DiffGrasp: Whole-Body Grasping Synthesis Guided by Object Motion Using a Diffusion Model.</span></b>
+                    <br><br>
+                    <span style="font-size:14pt">AAAI, 2025.</span>
+                    <br><br>
+                    <span style="font-size:20px">
+                        <a href="https://arxiv.org/abs/2203.15458">[Paper]</a> &nbsp; &nbsp;
+                        <a href="./resources/bibtex.txt">[Bibtex]</a> &nbsp; &nbsp; 
+                        <a href="https://github.com/iscas3dv/DiffGrasp">[Code]</a> &nbsp; &nbsp;
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+
+    <hr>
+    <div class="center-div">
+        <h1 id="code">Results</h1>
+    </div>
+    <div class="center-div">
+	    <table align="center" width="600px">
+	        <tbody>
+	            <tr>
+                    <td>
+	                    <div class="center-div">
+	                        <img src="./resources/images/demo/1_o.gif" width="250px">
+	                    </div>
+                    </td>
+                    <td>
+                        <div class="center-div">
+	                        <img src="./resources/images/demo/1_so.gif" width="250px">
+	                    </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="center-div">
+	                        <img src="./resources/images/demo/2_o.gif" width="251px">
+	                    </div>
+                    </td>
+                    <td>
+                        <div class="center-div">
+	                        <img src="./resources/images/demo/2_so.gif" width="260px">
+	                    </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="center-div"><span style="color: #e0e000">Object</span> motion sequence.</div></td>
+                    <td><div class="center-div">Results generated by <span style="color: #ceaec1">Diffgrasp</span>.</div></td>
+                </tr>
+	        </tbody>
+	    </table>
+        <div class="center-div"  width="1000px">
+            <span style="font-size:14px">
+                <!-- Qualitative comparison with our method and the state-of-art methods on NYU dataset. -->
+            </span>
+        </div>
+    </div>
+
+    <!-- <hr>
+    <div class="center-div">
+        <h1 id="code">Results</h1>
+    </div> -->
+    <br>
+    
+   
+
+    
+    <br><br>
+    <hr>
+    <table align="center" width="980px">
+        <tbody>
+            <tr>
+                <td>
+                    <left>
+                        <div class="center-div">
+                            <h1>Acknowledgements</h1>
+                        </div>
+                        <div class="center-div">
+                            This work was supported in part by National Science and Technology Major Project (2022ZD0117904), National Natural Science Foundation of China (62473356), Beijing Natural Science Foundation (L232028) and CAS Major Project (RCJJ-145-24-14).
+                            <br>
+                            The websiteis modified from this <a href="https://me495.github.io/handpose-virtualview/">template</a>.
+                        </div>
+                    </left>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+
+
+</body>
+
+</html>
