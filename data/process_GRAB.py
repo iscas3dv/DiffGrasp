@@ -109,21 +109,7 @@ class ArcticDataSet(object):
                             num_pca_comps=24,
                             # flat_hand_mean=True,
                         )
-        
-        # correspondence_M_S_idx = os.path.join(self.tools_path, 'smplx_correspondence', 'MANO_SMPLX_vertex_ids.pkl')
-        # self.bool_list_l = np.zeros([10475])
-        # self.bool_list_r = np.zeros([10475])
-        
-        # with open(correspondence_M_S_idx, 'rb') as f:
-        #     import pickle
-        #     idxs_data = pickle.load(f)
-        #     self.bool_list_l[idxs_data['left_hand']] = 1
-        #     self.bool_list_r[idxs_data['right_hand']] = 1
-        
-        # self.smplx_mano_left_verts_bool = torch.from_numpy(self.bool_list_l).to(torch.bool)
-        # self.smplx_mano_right_verts_bool = torch.from_numpy(self.bool_list_r).to(torch.bool)
-        
-        # correspondence_path = os.path.join(self.tools_path, 'smplx_correspondence', 'MANO_SMPLX_vertex_ids.pkl')
+
         correspondence_path = f'{self.cwd}/../configs/MANO_SMPLX_vertex_ids.pkl'
         with open(correspondence_path, 'rb') as f:
             import pickle
@@ -134,13 +120,10 @@ class ArcticDataSet(object):
         self.smplx_mano_left_verts_bool[idxs_data['left_hand']] = True
         self.smplx_mano_right_verts_bool[idxs_data['right_hand']] = True
 
-
-        # self.seqs_idx = {'train':[],'val':[],'test':[]}
   
         self.total_lens = 0
         
         ### welford algorithm: Calculate the mean and std iteratively
-        
         ds_welford = {'pose': {'count': None, 'mean': None, 'm2':None},
                    'rot2world': {'count': None, 'mean': None, 'm2':None},
                    'transl2world': {'count': None, 'mean': None, 'm2':None},
@@ -159,13 +142,9 @@ class ArcticDataSet(object):
                 continue
             seq_data = parse_npz(self.all_seqs[seq_i])
             
-            # for k,v in seq_data.items():
-            #     print(k)
             smplx_seq_params = seq_data['body']['params']
             sub_gender = seq_data['gender']
             sid = seq_data['sbj_id']
-
-            
 
             self.sbj_info = {}
             self.obj_info = {}
@@ -179,7 +158,6 @@ class ArcticDataSet(object):
             
             obj_seq_params = seq_data['object']['params']
             obj_mesh = Mesh(filename=os.path.join(self.root_path, seq_data['object']['object_mesh']))
-            
             
             contact_body = seq_data['contact']['body']
             
@@ -199,8 +177,7 @@ class ArcticDataSet(object):
                 sliding_window = window + i
                 windows.append(sliding_window)
 
-            
-            
+
             ds_name = ''
             if sid in self.train_sbj:
                 ds_name = 'train'    
@@ -208,10 +185,6 @@ class ArcticDataSet(object):
                 ds_name = 'val'
             else:
                 ds_name = 'test'
-
-            
-            
-            # self.seqs_idx[ds_name].extend([i+self.total_lens for i in range(len(windows))])
             
             self.total_lens += len(windows)
             
@@ -242,8 +215,6 @@ class ArcticDataSet(object):
                     self.female_model.v_template = torch.tensor(v_templates.v).to(torch.float32)
                     smplx_model = self.female_model.to(device)
                     
-                # smplx_pose_list = [smplx_global_orient, smplx_body_pose, smplx_jaw_pose, smplx_leye_pose, smplx_reye_pose, smplx_left_hand_pose, smplx_right_hand_pose]
-                # smplx_pose_aa = torch.cat(smplx_pose_list, dim=1)
                 smplx_pose_aa = smplx_full_pose
                 smplx_pose_rotmat = aa2rotmat(smplx_full_pose)
                 
@@ -286,7 +257,7 @@ class ArcticDataSet(object):
                 #     sp_anim.add_frame([sbj_mesh_, obj_mesh, sbj_mesh_2, obj_mesh_2],['sbj_mesh', 'obj_mesh','sbj_mesh_2', 'obj_mesh_2'])
                 # sp_anim.save_animation('grab_check.html')
                 
-                # exit()
+                
                 obj_mass = obj_verts_rot.mean(dim=1)
                 
                 obj_hand_contact = seqs_contact_label[windows_idxs]
@@ -400,13 +371,7 @@ class ArcticDataSet(object):
         contact_info = torch.sum(contact_label,dim=1).tolist()
         first_nonzero_index = next((i for i, x in enumerate(contact_info) if x != 0), None)
         last_nonzero_index = len(contact_info) - next((i for i, x in enumerate(reversed(contact_info)) if x != 0), None) - 1
-        # print(first_nonzero_index)
-        # print(last_nonzero_index)
-        # print(torch.sum(bool_list_l),torch.sum(bool_list_r))
-        # print(last_nonzero_index-first_nonzero_index)
-        # contact_info = torch.tensor(contact_info)
-        # print(torch.sum(contact_info[first_nonzero_index:last_nonzero_index]))
-        # print(torch.sum(bool_list_r))
+
         return (first_nonzero_index, last_nonzero_index), contact_label
         
     def load_sbj_verts(self, sbj_id, seq_data):

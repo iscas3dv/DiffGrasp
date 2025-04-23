@@ -21,7 +21,7 @@ This package has the following requirements:
 - [Kaolin](https://kaolin.readthedocs.io/en/latest/index.html)==0.15.0
 - [SMPLX](https://github.com/vchoutas/smplx)
 - [bps_torch](https://github.com/otaheri/bps_torch)
-- [aitviewer](https://github.com/eth-ait/aitviewer)
+- [psbody-mesh](https://github.com/MPI-IS/mesh)
 
 ## Installation
 To install the dependencies please follow the next steps:
