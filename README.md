@@ -12,8 +12,55 @@ Generating high-quality whole-body human object interaction motion sequences is 
 </br>
 
 
+## Requirements
+This package has the following requirements:
+
+- Python >=3.8.0
+- [Pytorch](https://pytorch.org/get-started/locally/)>=1.13.0 (cuda version==11.6)
+- [pytroch3d](https://pytorch3d.org/) >=0.7.5
+- [Kaolin](https://kaolin.readthedocs.io/en/latest/index.html)==0.15.0
+- [SMPLX](https://github.com/vchoutas/smplx)
+- [bps_torch](https://github.com/otaheri/bps_torch)
+- [aitviewer](https://github.com/eth-ait/aitviewer)
+
+## Installation
+To install the dependencies please follow the next steps:
+
+- Clone this repository
+- Install the dependencies:
+    ```
+    pip install -r requirements.txt
+    ```
+- [Download](https://smpl-x.is.tue.mpg.de/) SMPL-X model, and place pkl files to `./smpl_files/smplx`.
+## Data Preparation
+### GRAB Dataset
+- Download the GRAB dataset from the [GRAB website](https://grab.is.tue.mpg.de/), and follow the instructions there to extract the files. Save the raw data in `../DATASETS/GRAB`.
+
+- Sample 4000 points for each object in the GRAB dataset:
+
+    ```
+    python data/preprocess_GRAB_objects.py
+    ```
+
+- To pre-process the GRAB dataset for our setting, run:
+
+    ```
+    python data/process_GRAB.py
+    ```
+
 ## TODO List
-- [ ] Data preparation.
+- [√] Data preparation.
 - [ ] Release training and evaluation codes.
 - [ ] Release code for visualization.
 - [ ] Release checkpoints.
+
+## Citation
+```
+@article{DiffGrasp_2025, 
+    title={DiffGrasp: Whole-Body Grasping Synthesis Guided by Object Motion Using a Diffusion Model}, 
+    author={Zhang, Yonghao and He, Qiang and Wan, Yanguang and Zhang, Yinda and Deng, Xiaoming and Ma, Cuixia and Wang, Hongan}, 
+    url={https://ojs.aaai.org/index.php/AAAI/article/view/33120}, 
+    journal={Proceedings of the AAAI Conference on Artificial Intelligence}, 
+    year={2025}
+}
+```
