@@ -21,7 +21,7 @@ This package has the following requirements:
 - [Kaolin](https://kaolin.readthedocs.io/en/latest/index.html)==0.15.0
 - [SMPLX](https://github.com/vchoutas/smplx)
 - [bps_torch](https://github.com/otaheri/bps_torch)
-- [psbody-mesh](https://github.com/MPI-IS/mesh)
+- [aitviewer](https://eth-ait.github.io/aitviewer/)
 
 ## Installation
 To install the dependencies please follow the next steps:
@@ -31,7 +31,7 @@ To install the dependencies please follow the next steps:
     ```
     pip install -r requirements.txt
     ```
-- [Download](https://smpl-x.is.tue.mpg.de/) SMPL-X model, and place pkl files to `./smpl_files/smplx`.
+- [Download](https://smpl-x.is.tue.mpg.de/) SMPL-X model, and place it to `./para_models/smplx`.
 ## Data Preparation
 ### GRAB Dataset
 - Download the GRAB dataset from the [GRAB website](https://grab.is.tue.mpg.de/), and follow the instructions there to extract the files. Save the raw data in `../DATASETS/GRAB`.
@@ -48,15 +48,51 @@ To install the dependencies please follow the next steps:
     python data/process_GRAB.py
     ```
 
-## TODO List
-- [√] Data preparation.
-- [ ] Release training and evaluation codes.
-- [ ] Release code for visualization.
-- [ ] Release checkpoints.
+## Pre-trained Model
+
+Please download the GRAB dataset [checkpoint](https://drive.google.com/file/d/1VGT4t-FPQT6bddhYp-Ujq8bkRf9WK8Bs/view?usp=sharing) and put them in the folders as below.
+
+```
+   DiffGrasp
+    ├── work_dir
+    │   ├── DiffGrasp
+    │   │   ├── snapshots
+    │   │   │   ├──E300_model.pt
+    │   │   │   │
+    │   │   │   │
+    .
+    .
+    .
+```
+
+## Training
+
+```
+python train_DiffGrasp.py --mode=training
+```
+
+## Evaluation
+If you have downloaded checkpoint, you can inference directly; otherwise, please train DiffGrasp first.
+
+```
+python train_DiffGrasp.py --mode=inference
+```
+
+## Visualization
+We use [aitviewer](https://eth-ait.github.io/aitviewer/) to visualize the results.
+Please run on the server side:
+```
+python ait_vis.py
+```
+Launch an empty viewer with the command:
+```
+python -m aitviewer.server
+```
+
 
 ## Citation
 ```
-@article{DiffGrasp_2025, 
+@article{Zhang2025DiffGrasp, 
     title={DiffGrasp: Whole-Body Grasping Synthesis Guided by Object Motion Using a Diffusion Model}, 
     author={Zhang, Yonghao and He, Qiang and Wan, Yanguang and Zhang, Yinda and Deng, Xiaoming and Ma, Cuixia and Wang, Hongan}, 
     url={https://ojs.aaai.org/index.php/AAAI/article/view/33120}, 
